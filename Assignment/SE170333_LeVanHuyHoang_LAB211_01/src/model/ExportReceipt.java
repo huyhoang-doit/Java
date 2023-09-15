@@ -13,64 +13,58 @@ import java.util.HashMap;
  * @author lvhho
  */
 public class ExportReceipt extends WareHouse{
-    private int code;
-    
-    // Constructor
 
     public ExportReceipt() {
     }
 
-    public ExportReceipt(int code) {
-        this.code = code;
+    // Constructor
+    public ExportReceipt(String code, String time, HashMap<String, Product> listProduct, ArrayList<Integer> listQuantity) {
+        super(code, time, listProduct, listQuantity);
     }
 
-    public ExportReceipt(int code, String time, HashMap< String, Product> listProduct, ArrayList<Integer> listQuantity) {
-        super(time, listProduct, listQuantity);
-        this.code = code;
-    }
-    
-    // Getter 
+    // Getter and Setter
 
-    public int getCode() {
+    public String getCode() {
         return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public String getTime() {
         return time;
     }
 
-    public HashMap< String, Product> getListProduct() {
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public HashMap<String, Product> getListProduct() {
         return listProduct;
+    }
+
+    public void setListProduct(HashMap<String, Product> listProduct) {
+        this.listProduct = listProduct;
     }
 
     public ArrayList<Integer> getListQuantity() {
         return listQuantity;
     }
-    
-    // Setter
-
-    public void setCode(int code) {
-        this.code = code;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
-    }
-
-    public void setListProduct(HashMap< String, Product> listProduct) {
-        this.listProduct = listProduct;
-    }
 
     public void setListQuantity(ArrayList<Integer> listQuantity) {
         this.listQuantity = listQuantity;
     }
+   
     
     //toString
 
     @Override
     public String toString() {
-        return "ExportReceipt{" + "code=" + code + '}';
+        return "ExportReceipt{" + '}';
     }
+
+    
     
     
     // Method print information of receipt

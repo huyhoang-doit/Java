@@ -21,27 +21,29 @@ import view.Menu;
  *
  * @author lvhho
  */
-public class WareHouseFunciton {
+public class WareHouseFunciton implements IWareHouseFunction{
 
     private Scanner sc = new Scanner(System.in);
     private Menu menu = new Menu();
     private String time = DateTime.getTime();;
     private ArrayList<ImportReceipt> listImportReceipts = new ArrayList<>();
-    private ArrayList<ExportReceipt> listExpritionReceipts = new ArrayList<>();
-    private ArrayList<WareHouse> listAllReceipts = new ArrayList<>();
-    private int importReceiptCode = 1000000;
-    private int exportReceiptCode = 1000000;
+    private ArrayList<ExportReceipt> listExportReceipts = new ArrayList<>();
+    public ArrayList<WareHouse> listAllReceipts = new ArrayList<>();
+    private Integer importReceiptCode = 1000000;
+    private Integer exportReceiptCode = 1000000;
 
+    @Override
     //<1> Create an Import Receipt 
     public void CreateImportReceipt(HashMap<String, Product> listProduct, ArrayList<String> listCodeProduct) {
-        int codeReceipt, quantity, choice;
-        String time, productCode;
+        int  quantity, choice;
+        String codeReceipt,time, productCode, reverse;
         Product product;
         boolean stop = false;
         HashMap<String, Product> listImport = new HashMap<>();
         ArrayList<Integer> listQuantity = new ArrayList<>();
         
-        codeReceipt = importReceiptCode;
+        reverse = importReceiptCode.toString();
+        codeReceipt = "IM" + reverse;
         importReceiptCode++;
         time = this.time;
         
@@ -85,17 +87,18 @@ public class WareHouseFunciton {
     }
     
     
-    
+       @Override
     //<2> Create an Export Receipt 
     public void CreateExportReceipt(HashMap<String, Product> listProduct, ArrayList<String> listCodeProduct) {
-        int codeReceipt, quantity, choice;
-        String time, productCode;
+        int quantity, choice;
+        String codeReceipt, time, productCode, reverse;
         Product product;
         boolean stop = false;
         HashMap<String, Product> listExport = new HashMap<>();
         ArrayList<Integer> listQuantity = new ArrayList<>();
         
-        codeReceipt = exportReceiptCode;
+        reverse = exportReceiptCode.toString();
+        codeReceipt = "EX" + reverse;
         exportReceiptCode++;
         time = this.time;
         
@@ -134,7 +137,13 @@ public class WareHouseFunciton {
         ExportReceipt exReceipt = new ExportReceipt(codeReceipt, time, listExport, listQuantity);
         
         // Add receipt to list
-        listExpritionReceipts.add(exReceipt);
+        listExportReceipts.add(exReceipt);
         listAllReceipts.add(exReceipt);
     }
+    
+    @Override
+    // <3> Report: show receipt containing products, productCode entered by user
+    public void PrintInforReceiptByProductCode() {
+        
+    };
 }

@@ -14,5 +14,7 @@ public interface IProductFunction {
     public void updateProduct();
     public void deleteProduct();
     public void printListOfProduct();
-    
+    public void printListProductsExpired();
+    public void printListCurrentSell();
+    public void sortProductQuantity();
 }

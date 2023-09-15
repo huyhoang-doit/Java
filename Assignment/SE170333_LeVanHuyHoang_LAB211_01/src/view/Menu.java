@@ -40,13 +40,24 @@ public class Menu {
         System.out.println("                   --- WAREHOUSE MANAGEMENT ---               ");
         System.out.println("   +---------------------------------------------------------+");
         System.out.println("   |               <1> Create an import receipt              |");         
-        System.out.println("   |               <2> Create an exprition receipt           |");
+        System.out.println("   |               <2> Create an export receipt              |");
+        System.out.println("   +---------------------------------------------------------+");
+    }
+    
+    public void printReportMenu() {
+        System.out.println("");
+        System.out.println("                    ---    REPORT     ---                     ");
+        System.out.println("   +---------------------------------------------------------+");
+        System.out.println("   |          <1> Products that have expired                 |");         
+        System.out.println("   |          <2> The products that the store is selling.    |");
+        System.out.println("   |          <3> Products that are running out of stock     |");
+        System.out.println("   |          <4> Import/export receipt of a product.        |");
         System.out.println("   +---------------------------------------------------------+");
     }
     //Level 2
     public void printWarehouseSubMenu() {
         System.out.println("");
-        System.out.println("      --- CREATE NEW IMPORT/EXPRITION RECEIPT CHOICE ---      ");
+        System.out.println("         --- CREATE NEW IMPORT/EXPORT RECEIPT CHOICE ---      ");
         System.out.println("   +---------------------------------------------------------+");
         System.out.println("   |               1. Create new receipt                     |");         
         System.out.println("   |               2. Exit                                   |");

@@ -13,6 +13,7 @@ import java.util.HashMap;
  * @author lvhho
  */
 public class WareHouse {
+    protected String code;
     protected String time;
     protected HashMap< String, Product> listProduct;
     protected ArrayList<Integer> listQuantity;
@@ -21,43 +22,50 @@ public class WareHouse {
     public WareHouse() {
     }
 
-    public WareHouse(String time, HashMap<String, Product> listProduct, ArrayList<Integer> listQuantity) {
+    public WareHouse(String code, String time, HashMap<String, Product> listProduct, ArrayList<Integer> listQuantity) {
+        this.code = code;
         this.time = time;
         this.listProduct = listProduct;
         this.listQuantity = listQuantity;
     }
-    
-    // Getter 
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
     public String getTime() {
         return time;
     }
 
-    public HashMap< String, Product> getListProduct() {
-        return listProduct;
-    }
-
-    public ArrayList<Integer> getListQuantity() {
-        return listQuantity;
-    }
-    
-    // Setter 
     public void setTime(String time) {
         this.time = time;
+    }
+
+    public HashMap<String, Product> getListProduct() {
+        return listProduct;
     }
 
     public void setListProduct(HashMap<String, Product> listProduct) {
         this.listProduct = listProduct;
     }
 
+    public ArrayList<Integer> getListQuantity() {
+        return listQuantity;
+    }
+
+    // Getter
     public void setListQuantity(ArrayList<Integer> listQuantity) {
         this.listQuantity = listQuantity;
     }
-    
-    
-    // toString
+
     @Override
     public String toString() {
-        return "WareHouse{" + "time=" + time + ", listProduct=" + listProduct + ", listQuantity=" + listQuantity + '}';
+        return time + "," + code;
     }
+
+    
     
 }

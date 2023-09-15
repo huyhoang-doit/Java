@@ -5,9 +5,14 @@
  */
 package controller;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Scanner;
+import javafx.util.converter.LocalDateTimeStringConverter;
 import model.Product;
 import tool.CheckNumber;
 import tool.CheckRule;
@@ -20,8 +25,8 @@ import view.Menu;
  */
 public class ProductFunction implements IProductFunction {
 
-    private HashMap<String, Product> listProduct = new HashMap<>();
-    private ArrayList<String> listCodeProduct = new ArrayList<>();
+    public HashMap<String, Product> listProduct = new HashMap<>();
+    public ArrayList<String> listCodeProduct = new ArrayList<>();
     private Scanner sc = new Scanner(System.in);
     private Menu menu = new Menu();
 
@@ -164,10 +169,85 @@ public class ProductFunction implements IProductFunction {
     // <4> List of products
     public void printListOfProduct() {
         System.out.println(">>>> LIST OF PRODUCTS AT THE STORE");
-        System.out.printf("|%-5s|%-25s|%-15s|%-10s|%-10s|-10s|\n", "CODE", "PRODUCT-NAME", "GROUP", "MAN_DATE", "EXP_DATE", "QUANTITY");
+        System.out.printf("|%-5s|%-25s|%-15s|%-10s|%-10s|%-10s|\n", "CODE", "PRODUCT-NAME", "GROUP", "MAN_DATE", "EXP_DATE", "QUANTITY");
         System.out.println("------------------------------------------------------------");
         for (Product object : listProduct.values()) {
             object.showLineInfoProduct();
+        }
+    }
+
+    @Override
+    // <5> Report: List product that have expired : hết hạn sử dụng
+    public void printListProductsExpired() {
+        // Create LocalDateTime now to compare with expritiondate of product
+        LocalDateTime checker = LocalDateTime.now();
+
+        // "string" HELP convert expritiondate to LocalDateTime
+        LocalDateTimeStringConverter string = new LocalDateTimeStringConverter();
+
+        System.out.println(">>>> LIST PRODUCTS EXPIRED");
+        System.out.printf("|%-5s|%-25s|%-15s|%-10s|%-10s|%-10s|\n", "CODE", "PRODUCT-NAME", "GROUP", "MAN_DATE", "EXP_DATE", "QUANTITY");
+        for (Product product : listProduct.values()) {
+            String expritionDate = product.getExpritionDate();
+            // Covert String to LocalDateTime
+            LocalDateTime exDate = string.fromString(expritionDate);
+
+            if (checker.isAfter(exDate)) {
+                product.showLineInfoProduct();
+            }
+        }
+    }
+
+    @Override
+    //<6> Print list of products store selling now ( quantity > 0 and not exprired
+    public void printListCurrentSell() {
+        // Create LocalDateTime now to compare with expritiondate of product
+        LocalDateTime checker = LocalDateTime.now();
+
+        // "string" HELP convert expritiondate to LocalDateTime
+        LocalDateTimeStringConverter string = new LocalDateTimeStringConverter();
+
+        System.out.println(">>>> LIST PRODUCTS STORE SELLING");
+        System.out.printf("|%-5s|%-25s|%-15s|%-10s|%-10s|%-10s|\n", "CODE", "PRODUCT-NAME", "GROUP", "MAN_DATE", "EXP_DATE", "QUANTITY");
+        for (Product product : listProduct.values()) {
+            String expritionDate = product.getExpritionDate();
+            // Covert String expritionDate to LocalDateTime
+            LocalDateTime exDate = string.fromString(expritionDate);
+
+            if (checker.isAfter(exDate) && product.getQuantity() > 0) {
+                product.showLineInfoProduct();
+            }
+        }
+    }
+
+    @Override
+    //<7> Sort product quantity
+    //Purpopse: to print list products are running out of stock < sort acsending of quantity> 
+    public void sortProductQuantity() {
+        // Create list product for ready using Collection.sort
+        ArrayList<Product> listSort = new ArrayList<>();
+        for (Product product : listProduct.values()) {
+            // Select product has quantity less equal than 3
+            if(product.getQuantity() >= 3) {
+                listSort.add(product);
+            }
+        }
+        // Sort
+        Collections.sort(listSort, new Comparator<Product>() {
+            @Override
+            public int compare(Product p1, Product p2) {
+                if (p1.getQuantity() > p2.getQuantity()) {
+                    return -1;
+                } else {
+                    return 1;
+                }
+            }
+        });
+        // Print list products after sort
+        System.out.println(">>>> LIST PRODUCTS ARE RUNNING OUT OF STOCK");
+        System.out.printf("|%-5s|%-25s|%-15s|%-10s|%-10s|%-10s|\n", "CODE", "PRODUCT-NAME", "GROUP", "MAN_DATE", "EXP_DATE", "QUANTITY");
+        for (Product product : listSort) {
+            product.showLineInfoProduct();
         }
     }
 
