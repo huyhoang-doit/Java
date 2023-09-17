@@ -20,31 +20,41 @@ public class DataController {
 
     //<1> Save list product to file "product.dat"
     public static void saveListProductsToFile(HashMap<String, Product> listProduct) {
-        try {
-            FileWriter fw = new FileWriter("\\output\\product.dat");
-            BufferedWriter bf = new BufferedWriter(fw);
-            for (Product product : listProduct.values()) {
-                bf.write(product.toString());
-                bf.newLine();
+        if (listProduct.isEmpty()) {
+            System.out.println(">>>> LIST OF PRODUCTS AT THE STORE IS EMPTY!!!");
+        } else {
+            try {
+                FileWriter fw = new FileWriter("src\\output\\product.dat");
+                BufferedWriter bf = new BufferedWriter(fw);
+                for (Product product : listProduct.values()) {
+                    bf.write(product.toString());
+                    bf.newLine();
+                }
+                bf.close();
+                fw.close();
+            } catch (Exception e) {
             }
-            bf.close();
-            fw.close();
-        } catch (Exception e) {
+            System.out.println("Product list saved successfully");
         }
     }
-    
+
     //<2> Save list receipt to file "wareHouse.dat"
     public static void saveListReceiptsToFile(ArrayList<WareHouse> listReceipt) {
-        try {
-            FileWriter fw = new FileWriter("\\output\\product.dat");
-            BufferedWriter bf = new BufferedWriter(fw);
-            for (WareHouse receipt : listReceipt) {
-                bf.write(receipt.toString());
-                bf.newLine();
+        if (listReceipt.isEmpty()) {
+            System.out.println(">>>> LIST OF RECEIPTS AT THE STORE IS EMPTY!!");
+        } else {
+            try {
+                FileWriter fw = new FileWriter("src\\output\\wareHouse.dat");
+                BufferedWriter bf = new BufferedWriter(fw);
+                for (WareHouse receipt : listReceipt) {
+                    bf.write(receipt.toString());
+                    bf.newLine();
+                }
+                bf.close();
+                fw.close();
+            } catch (Exception e) {
             }
-            bf.close();
-            fw.close();
-        } catch (Exception e) {
+            System.out.println("Receipt list saved successfully");
         }
     }
 }

@@ -12,10 +12,11 @@ package model;
 public class Product {
     private String productCode;
     private String productName;
+    private String group;
     private String manufactureDate;
     private String expritionDate;
     private int quantity;
-    private String group;
+    
     
     // Constructor
 

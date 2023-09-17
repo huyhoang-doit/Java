@@ -61,7 +61,7 @@ public class ExportReceipt extends WareHouse{
 
     @Override
     public String toString() {
-        return "ExportReceipt{" + '}';
+        return code + "," + time;
     }
 
     
@@ -70,13 +70,13 @@ public class ExportReceipt extends WareHouse{
     // Method print information of receipt
     public void printInforOfReceipt() {
         int count = 0;
-        System.out.println("+-------------------------------------+");
-        System.out.println("EXPRITION RECEIPT");
-        System.out.println("|Exp: " + code + "  Time: " + time + " |");
+        System.out.println("+-------------------------------------------------+");
+        System.out.println("|>>> EXPRITION RECEIPT");
+        System.out.println("|Exp: " + code + "          Time: " + time + " |");
         System.out.printf("|%-4s|%-7s|%-25s|%-10s|\n", "STT", "ID_CODE", "PRODUCT NAME", "QUANTITY");
         for (String IDCode : listProduct.keySet()) {
             System.out.printf("|%-4d|%-7s|%-25s|%-10d|\n", count + 1, IDCode, listProduct.get(IDCode).getProductName(), listQuantity.get(count));
         }
-        System.out.println("+-------------------------------------+");
+        System.out.println("+-------------------------------------------------+");
     }
 }

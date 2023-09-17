@@ -21,51 +21,36 @@ public class CheckRule {
     // Purpose: to find the product code does not exist, to create new code, can not duplicate
     public static String findProductCodeNotExist(ArrayList<String> listCode) {
         String code;
-        boolean check = true;
         do {
             code = CheckRule.productCodeValid();
             if (listCode.isEmpty()) {
                 return code;
             } else {
-                for (String string : listCode) {
-                    if (code.equalsIgnoreCase(string)) {
-                        check = false;
-                        System.out.println("Code already exists!");
-                        break;
-                    }
+                if (listCode.contains(code)) {
+                    System.out.println("Code already exists!");
+                    System.out.print("Try again!, Product code: ");
+                } else {
+                    return code;
                 }
             }
-
-            if (check == false) {
-                System.out.print("Try again!, Product code: ");
-            }
-        } while (check == false);
-        return code;
+        } while (true);
     }
 
-    
     //<2> Check if the product code is in the list or not - check code exist or not exist
     // Purpose : to find the product exist in the list, choose product in the list
     public static String findProductCodeExist(ArrayList<String> listCode) {
         String code;
-        boolean check = false;
         do {
             code = CheckRule.productCodeValid();
-            for (String string : listCode) {
-                if (code.equalsIgnoreCase(string)) {
-                    check = true;
-                    return code;
-                }
-            }
-            if (check == false) {
+            if (listCode.contains(code)) {
+                return code;
+            } else {
                 System.out.println("Product does not exist!");
                 System.out.print("Try again!, Product code: ");
             }
-        } while (check == false);
-        return code;
+        } while (true);
     }
-    
-    
+
     //<3> Check code valid with format
     //Purpose: keep the product code in one format
     public static String productCodeValid() {
@@ -82,5 +67,20 @@ public class CheckRule {
             }
         } while (check == false);
         return code;
+    }
+
+    //<4> Check quantity valid (quantity > 0)
+    public static int checkQuantityInStore(int quantity) {
+        int quantityInput = 0;
+        do {
+            quantityInput = CheckNumber.getAnInteger();
+            if (quantityInput > quantity) {
+                System.out.println("The quantity of product you need is not enough!");
+                System.out.println("Quantity in store now : " + quantity);
+                System.out.print("Quantity ( < " + quantity + " ): ");
+            } else {
+                return quantityInput;
+            }
+        } while (true);
     }
 }

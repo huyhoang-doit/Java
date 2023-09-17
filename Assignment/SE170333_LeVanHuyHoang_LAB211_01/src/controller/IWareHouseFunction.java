@@ -16,5 +16,5 @@ import model.Product;
 public interface IWareHouseFunction {
      public void CreateImportReceipt(HashMap<String, Product> listProduct, ArrayList<String> listCodeProduct);
      public void CreateExportReceipt(HashMap<String, Product> listProduct, ArrayList<String> listCodeProduct);
-     public void PrintInforReceiptByProductCode();
+     public void printInforReceiptByProductCode(ArrayList<String> listCodeProduct);
 }

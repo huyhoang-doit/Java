@@ -15,7 +15,7 @@ import java.util.HashMap;
 public class WareHouse {
     protected String code;
     protected String time;
-    protected HashMap< String, Product> listProduct;
+    public HashMap< String, Product> listProduct;
     protected ArrayList<Integer> listQuantity;
     
     // Constructor

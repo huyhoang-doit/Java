@@ -5,6 +5,11 @@
  */
 package controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import model.Product;
+import model.WareHouse;
+
 /**
  *
  * @author lvhho
@@ -12,7 +17,7 @@ package controller;
 public interface IProductFunction {
     public void addProduct();
     public void updateProduct();
-    public void deleteProduct();
+    public void deleteProduct(HashMap<String, Product> listProductAppear);
     public void printListOfProduct();
     public void printListProductsExpired();
     public void printListCurrentSell();
