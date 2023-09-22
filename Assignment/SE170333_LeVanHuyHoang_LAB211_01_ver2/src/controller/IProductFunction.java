@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import model.Product;
 import model.WareHouse;
+import model.WarehousedProduct;
 
 /**
  *
@@ -16,10 +17,8 @@ import model.WareHouse;
  */
 public interface IProductFunction {
     public void addProduct();
-    public void updateProduct(HashMap<String, Product> listProductAppear);
+    public void updateProduct();
     public void deleteProduct(HashMap<String, Product> listProductAppear);
     public void printListOfProduct();
-    public void printListProductsExpired();
-    public void printListCurrentSell();
     public void sortProductQuantity();
 }

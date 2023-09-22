@@ -63,8 +63,7 @@ public class CheckRule {
                 check = true;
                 return code;
             } else {
-                System.err.println("Invalid code! ");
-                System.out.print("Try again <Code:*****>:");
+                System.err.print("Invalid code, try again <Code:*****>: ");
             }
         } while (check == false);
         return code;

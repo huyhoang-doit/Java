@@ -88,10 +88,6 @@ public class Product {
         return productCode + ", " + productName + ", " + manufactureDate + ", "+  expritionDate +", " + quantity + ", " + group;
     }
 
-    
-    
-    
-    
     public void showLineInfoProduct() {
         System.out.printf("|%-5s|%-25s|%-15s|%-10s|%-10s|%10d|\n", productCode, productName, group, manufactureDate, expritionDate, quantity);
     }

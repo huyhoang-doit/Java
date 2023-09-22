@@ -13,6 +13,8 @@ import java.util.Scanner;
  */
 public class CheckNumber {
     private static Scanner sc = new Scanner(System.in);
+    
+    // <1> Get Integer
     public static int getAnInteger() {
         do {            
             try {
@@ -23,6 +25,7 @@ public class CheckNumber {
             }
         } while (true);
     }
+    // <2> Get Integer with request
     public static int getAnInteger(String messRequest, String messError, int lower, int upper) {
         if ( upper < lower) {
             int tmp = upper;
@@ -46,6 +49,8 @@ public class CheckNumber {
             
         } while (true);
     }
+    
+    // <3> Get Double
      public static Double getADouble() {
         do {            
             try {

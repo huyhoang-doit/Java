@@ -31,7 +31,7 @@ public class DateTime {
                 result = df.format(date);
                 return result;
             } catch (Exception e) {
-                System.out.println("Invalid value, try again <dd-MM-yyyy>");
+                System.err.println("Invalid value! try again <dd-MM-yyyy>");
             }
         } while (true);
     }
@@ -47,7 +47,7 @@ public class DateTime {
                 result = df.format(date);
                 return result;
             } catch (Exception e) {
-                System.out.print("Invalid value, try again <dd-MM-yyyy> :");
+                System.err.print("Invalid value! try again <dd-MM-yyyy> :");
             }
         } while (true);
     }
@@ -59,6 +59,7 @@ public class DateTime {
         String formattedDate = myDateObj.format(myFormatObj);
         return formattedDate;
     }
+
     //<3.2> Get day Current
     public static String getDay() {
         LocalDateTime myDateObj = LocalDateTime.now();
@@ -66,7 +67,7 @@ public class DateTime {
         String formattedDate = myDateObj.format(myFormatObj);
         return formattedDate;
     }
-    
+
     //<4> Check expired: kiem tra han su dung
     public static boolean isExpired(String day) {
         try {
@@ -80,13 +81,41 @@ public class DateTime {
             exDate = df.parse(day);
             if (today.after(exDate)) {
                 return true;
-            }else {
+            } else {
                 return false;
             }
-            
+
         } catch (ParseException ex) {
-            System.out.println("ERROR");
+            System.err.println("ERROR");
         }
         return false;
+    }
+
+    // <5> Check exprition date (exprition after manufacture)
+    public static String checkExpritionDate(String manufacture) {
+        String result;
+        Date manDate = null;
+        Date exDate = null;
+        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+
+        do {
+            try {
+                // Get Date of manDate
+                manDate = df.parse(manufacture);
+                // input exDate
+                result = DateTime.getExpritionDate();
+                // get Date of exDate
+                exDate = df.parse(result);
+
+                // Compare exDate after manDate
+                if (exDate.after(manDate)) {
+                    return result;
+                }
+                System.err.println("Exprition date must after manufacture date!!!");
+                System.out.print("Enter again <dd-MM-yyyy>: ");
+            } catch (Exception e) {
+                System.out.println("ERROR");
+            }
+        } while (true);
     }
 }

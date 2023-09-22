@@ -56,7 +56,7 @@ public class ProductFunction implements IProductFunction {
                 System.out.print("Input date of manufacture <dd-MM-yyyy>: ");
                 manDate = DateTime.getManuFactureDate();
                 System.out.print("Input date of exprition <dd-MM-yyyy>: ");
-                expDate = DateTime.getExpritionDate();
+                expDate = DateTime.checkExpritionDate(manDate);
                 break;
             }
         }
@@ -77,7 +77,7 @@ public class ProductFunction implements IProductFunction {
 
     @Override
     // <2> Update method
-    public void updateProduct() {
+    public void updateProduct(HashMap<String, Product> listProductAppear) {
 
         String code, name, manDate = "", expDate = "", group = "";
         int quantity, groupChoice;
@@ -86,68 +86,69 @@ public class ProductFunction implements IProductFunction {
         if (listProduct.isEmpty()) {
             System.out.println(">>>> LIST OF PRODUCTS AT THE STORE IS EMPTY!!!");
         } else {
+            // Only update product not exist in listProductsAppear
             System.out.print("Enter the product code you want to update <Code:*****>: ");
             code = CheckRule.productCodeValid();
-            for (String string : listCodeProduct) {
-                if (code.equals(string)) {
-                    checkCode = true;
-                    break;
-                }
-            }
-            if (checkCode == false) {
-                System.out.println("Product does not exist!");
-            } else {
-                System.out.println("Product " + code + " is ready to be updated");
-                // Find product have this 'code'
-                Product productUpdate = listProduct.get(code);
-
-                // Remove this code out of list code product
-                for (int i = 0; i < listCodeProduct.size(); i++) {
-                    if (listCodeProduct.get(i).equals(code)) {
-                        listCodeProduct.remove(i);
+            if (!listProductAppear.containsKey(code)) {
+                for (String string : listCodeProduct) {
+                    if (code.equals(string)) {
+                        checkCode = true;
                         break;
                     }
                 }
+                if (checkCode == false) {
+                    System.out.println("Product does not exist!");
+                } else {
+                    System.out.println("Product " + code + " is ready to be updated");
+                    // Find product have this 'code'
+                    Product productUpdate = listProduct.get(code);
 
-                //Update new information 
-                System.out.print("Product code <Code:*****>: ");
-                code = CheckRule.findProductCodeNotExist(listCodeProduct);
-                productUpdate.setProductCode(code);
-                System.out.print("Product name: ");
-                name = sc.nextLine().toUpperCase().trim();
-                productUpdate.setProductName(name);
-                menu.printGroupProductOptions();
-                groupChoice = CheckNumber.getAnInteger("Group: ", "Illegal, try again", 1, 2);
-                switch (groupChoice) {
-                    case 1: {
-                        group = "Daily use";
-                        manDate = DateTime.getDay();
-                        expDate = DateTime.getDay();
-                        productUpdate.setGroup(group);
-                        productUpdate.setManufactureDate(manDate);
-                        productUpdate.setExpritionDate(expDate);
-                        break;
+                    // Remove this code out of list code product
+                    listCodeProduct.remove(code);
+
+                    //Update new information 
+                    System.out.print("Product code <Code:*****>: ");
+                    code = CheckRule.findProductCodeNotExist(listCodeProduct);
+                    productUpdate.setProductCode(code);
+                    System.out.print("Product name: ");
+                    name = sc.nextLine().toUpperCase().trim();
+                    productUpdate.setProductName(name);
+                    menu.printGroupProductOptions();
+                    groupChoice = CheckNumber.getAnInteger("Group: ", "Illegal, try again", 1, 2);
+                    switch (groupChoice) {
+                        case 1: {
+                            group = "Daily use";
+                            manDate = DateTime.getDay();
+                            expDate = DateTime.getDay();
+                            productUpdate.setGroup(group);
+                            productUpdate.setManufactureDate(manDate);
+                            productUpdate.setExpritionDate(expDate);
+                            break;
+                        }
+                        case 2: {
+                            group = "Long shelf life";
+                            productUpdate.setGroup(group);
+                            System.out.print("Input date of manufacture <dd-MM-yyyy>: ");
+                            manDate = DateTime.getManuFactureDate();
+                            productUpdate.setManufactureDate(manDate);
+                            System.out.print("Input date of exprition <dd-MM-yyyy>: ");
+                            expDate = DateTime.checkExpritionDate(manDate);
+                            productUpdate.setExpritionDate(expDate);
+                            break;
+                        }
                     }
-                    case 2: {
-                        group = "Long shelf life";
-                        productUpdate.setGroup(group);
-                        System.out.print("Input date of manufacture <dd-MM-yyyy>: ");
-                        manDate = DateTime.getManuFactureDate();
-                        productUpdate.setManufactureDate(manDate);
-                        System.out.print("Input date of exprition <dd-MM-yyyy>: ");
-                        expDate = DateTime.getExpritionDate();
-                        productUpdate.setExpritionDate(expDate);
-                        break;
-                    }
+                    System.out.print("Quantity: ");
+                    quantity = CheckNumber.getAnInteger();
+                    productUpdate.setQuantity(quantity);
+
+                    //Add new product code to the list product code
+                    listCodeProduct.add(code);
+                    System.out.println("Product update successful >^<");
+                    System.out.println("----------------------------------------------------------------------------------");
                 }
-                System.out.print("Quantity: ");
-                quantity = CheckNumber.getAnInteger();
-                productUpdate.setQuantity(quantity);
-
-                //Add new product code to the list product code
-                listCodeProduct.add(code);
-                System.out.println("Product update successful >^<");
-                System.out.println("----------------------------------------------------------------------------------");
+            }else {
+                System.out.println("This product CANNOT be UPDATED because the product information ");
+                System.out.println("is already EXISTS in the import-export receipt!");
             }
         }
     }
@@ -157,14 +158,14 @@ public class ProductFunction implements IProductFunction {
     public void deleteProduct(HashMap<String, Product> listProductAppear) {
         String code;
         int choice;
-        
+
         if (listProduct.isEmpty()) {
             System.out.println(">>>> LIST OF PRODUCTS AT THE STORE IS EMPTY!!!");
         } else {
             // Only delete product not exist in listProdcutsAppear
             System.out.print("Enter the product code you want to delete <Code:*****>: ");
             code = CheckRule.findProductCodeExist(listCodeProduct);
-            
+
             if (!listProductAppear.containsKey(code)) {
                 menu.printConfirmDeleteMessage();
                 choice = CheckNumber.getAnInteger("Your choice: ", "Fail, choice again: ", 1, 2);
@@ -205,17 +206,31 @@ public class ProductFunction implements IProductFunction {
     @Override
     // <5> Report: List product that have expired : hết hạn sử dụng
     public void printListProductsExpired() {
+        ArrayList<Product> listExpired = new ArrayList<>();
+
         if (listProduct.isEmpty()) {
             System.out.println(">>>> LIST OF PRODUCTS AT THE STORE IS EMPTY!!!");
         } else {
             boolean check;
-            System.out.println(">>>> LIST PRODUCTS EXPIRED");
-            System.out.printf("|%-5s|%-25s|%-15s|%-10s|%-10s|%-10s|\n", "CODE", "PRODUCT-NAME", "GROUP", "MAN_DATE", "EXP_DATE", "QUANTITY");
-            System.out.println("----------------------------------------------------------------------------------");
+
+            // Add expired products to the listExpired
             for (Product product : listProduct.values()) {
                 String expritionDate = product.getExpritionDate();
                 check = DateTime.isExpired(expritionDate);
                 if (check) {
+                    listExpired.add(product);
+                }
+            }
+
+            // Print listExpired
+            System.out.println(">>>> LIST PRODUCTS EXPIRED");
+            System.out.printf("|%-5s|%-25s|%-15s|%-10s|%-10s|%-10s|\n", "CODE", "PRODUCT-NAME", "GROUP", "MAN_DATE", "EXP_DATE", "QUANTITY");
+            System.out.println("----------------------------------------------------------------------------------");
+            if (listExpired.isEmpty()) {
+                System.out.println("|                                     NULL                                       |");
+                System.out.println("----------------------------------------------------------------------------------");
+            } else {
+                for (Product product : listExpired) {
                     product.showLineInfoProduct();
                 }
             }
@@ -225,17 +240,31 @@ public class ProductFunction implements IProductFunction {
     @Override
     //<6> Print list of products store selling now ( quantity > 0 and not exprired )
     public void printListCurrentSell() {
+        ArrayList<Product> listCelling = new ArrayList<>();
+
         if (listProduct.isEmpty()) {
             System.out.println(">>>> LIST OF PRODUCTS AT THE STORE IS EMPTY!!!");
         } else {
             boolean check;
-            System.out.println(">>>> LIST PRODUCTS STORE SELLING");
-            System.out.printf("|%-5s|%-25s|%-15s|%-10s|%-10s|%-10s|\n", "CODE", "PRODUCT-NAME", "GROUP", "MAN_DATE", "EXP_DATE", "QUANTITY");
-            System.out.println("----------------------------------------------------------------------------------");
+
+            // Create celling list
             for (Product product : listProduct.values()) {
                 String expritionDate = product.getExpritionDate();
                 check = DateTime.isExpired(expritionDate);
                 if (!check && product.getQuantity() > 0) {
+                    listCelling.add(product);
+                }
+            }
+
+            // Print celling list
+            System.out.println(">>>> LIST PRODUCTS STORE SELLING");
+            System.out.printf("|%-5s|%-25s|%-15s|%-10s|%-10s|%-10s|\n", "CODE", "PRODUCT-NAME", "GROUP", "MAN_DATE", "EXP_DATE", "QUANTITY");
+            System.out.println("----------------------------------------------------------------------------------");
+            if (listCelling.isEmpty()) {
+                System.out.println("|                                     NULL                                       |");
+                System.out.println("----------------------------------------------------------------------------------");
+            } else {
+                for (Product product : listCelling) {
                     product.showLineInfoProduct();
                 }
             }
@@ -272,8 +301,13 @@ public class ProductFunction implements IProductFunction {
             System.out.println(">>>> LIST PRODUCTS ARE RUNNING OUT OF STOCK");
             System.out.printf("|%-5s|%-25s|%-15s|%-10s|%-10s|%-10s|\n", "CODE", "PRODUCT-NAME", "GROUP", "MAN_DATE", "EXP_DATE", "QUANTITY");
             System.out.println("----------------------------------------------------------------------------------");
-            for (Product product : listSort) {
-                product.showLineInfoProduct();
+            if (listSort.isEmpty()) {
+                System.out.println("|                                     NULL                                       |");
+                System.out.println("----------------------------------------------------------------------------------");
+            } else {
+                for (Product product : listSort) {
+                    product.showLineInfoProduct();
+                }
             }
         }
     }

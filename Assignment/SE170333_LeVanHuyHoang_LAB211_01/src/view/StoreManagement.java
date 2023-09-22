@@ -39,6 +39,7 @@ public class StoreManagement {
                         // <1.1> Add new product
                         case 1: {
                             int addProductChoice;
+                            productFunction.addProduct();
                             do {
                                 menu.printAddNewProductOptions();
                                 addProductChoice = CheckNumber.getAnInteger("Your choice: ", "Your selection is not valid, choose 1 or 2", 1, 2);
@@ -69,7 +70,7 @@ public class StoreManagement {
 
                                     // Agree update information
                                     case 1: {
-                                        productFunction.updateProduct();
+//                                        productFunction.updateProduct();
                                         break;
                                     }
 
