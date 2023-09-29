@@ -72,11 +72,9 @@ public class ProductFunction implements IProductFunction {
 
     @Override
     // <2> Update method (50%)
-    public void updateProduct() {
-
+    public void updateProduct(ArrayList<WarehousedProduct> listProductsInWareHouse) {
         String code, name, group = "";
-        int expiry = 0;
-
+        ////
         if (listProduct.isEmpty()) {
             System.err.println(">>>> LIST OF PRODUCTS AT THE STORE IS EMPTY!!!");
         } else {
@@ -84,12 +82,13 @@ public class ProductFunction implements IProductFunction {
             code = CheckRule.productCodeValid();
             if (listCodeProduct.contains(code)) {
                 System.out.println("Product " + code + " is ready to be updated");
-
+                String codetmp = code;
                 // Find product have this 'code'
                 Product productUpdate = listProduct.get(code);
 
                 // Remove this code out of list code product
                 listCodeProduct.remove(code);
+                listProduct.remove(code);
 
                 //Update new information < code - name >
                 System.out.print("Product code <Code:*****>: ");
@@ -101,6 +100,17 @@ public class ProductFunction implements IProductFunction {
 
                 //Add new product code to the list product code
                 listCodeProduct.add(code);
+                listProduct.put(code, productUpdate);
+                
+                
+                // Update info product in receipts
+                for (WarehousedProduct warehousedProduct : listProductsInWareHouse) {
+                    if (warehousedProduct.getProduct().getProductCode().equals(codetmp)) {
+                        warehousedProduct.setProduct(productUpdate);
+                    }
+
+                }
+                
                 System.out.println("Product update successful >^<");
                 System.out.println("|-----------------------------------------------------------|");
             } else {

@@ -17,7 +17,7 @@ import model.WarehousedProduct;
  */
 public interface IProductFunction {
     public void addProduct();
-    public void updateProduct();
+    public void updateProduct(ArrayList<WarehousedProduct> listProductsInWareHouse);
     public void deleteProduct(HashMap<String, Product> listProductAppear);
     public void printListOfProduct();
     public void sortProductQuantity();

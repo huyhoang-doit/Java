@@ -7,6 +7,7 @@ package controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 import model.ExportReceipt;
 import model.ImportReceipt;
@@ -57,9 +58,8 @@ public class WareHouseFunciton implements IWareHouseFunction {
             // Create ID receipt
             reverseInt = Integer.parseInt(importReceiptCode);
             String tmp = String.format("%07d", reverseInt);
-            reverseInt++;
             codeReceipt = "IM" + tmp;
-            importReceiptCode = reverseInt.toString();
+
             time = this.time;
 
             do {
@@ -121,6 +121,9 @@ public class WareHouseFunciton implements IWareHouseFunction {
                             // New receipt create
                             imReceipt = new ImportReceipt(codeReceipt, time, listProductsImport, listQuantity);
                             imReceipt.printInforOfReceipt();
+                            // Raise count receipt
+                            reverseInt++;
+                            importReceiptCode = reverseInt.toString();
                             stop = true;
                             break;
                         }
@@ -141,6 +144,9 @@ public class WareHouseFunciton implements IWareHouseFunction {
                                 // New receipt create
                                 imReceipt = new ImportReceipt(codeReceipt, time, listProductsImport, listQuantity);
                                 imReceipt.printInforOfReceipt();
+                                // Raise count receipt
+                                reverseInt++;
+                                importReceiptCode = reverseInt.toString();
                             }
                             stop = true;
                             break;
@@ -175,9 +181,9 @@ public class WareHouseFunciton implements IWareHouseFunction {
             // Create ID receipt
             reverseInt = Integer.parseInt(exportReceiptCode);
             String tmp = String.format("%07d", reverseInt);
-            reverseInt++;
+
             codeReceipt = "EX" + tmp;
-            exportReceiptCode = reverseInt.toString();
+
             time = this.time;
 
             System.out.println("Enter product information on this export receipt:");
@@ -190,6 +196,7 @@ public class WareHouseFunciton implements IWareHouseFunction {
                     int check = 0;
                     // Find product sx in warehouse by product
                     for (WarehousedProduct warehousedProduct : listProductsInWareHouse) {
+                        int breakFor = 0;
                         if (warehousedProduct.getProduct().equals(product)) {
                             WarehousedProduct productSX = new WarehousedProduct();
                             productSX = warehousedProduct;
@@ -208,6 +215,10 @@ public class WareHouseFunciton implements IWareHouseFunction {
                             listProductsExport.add(productSX);
                             System.out.println("This product has been added to the receipt");
                             check = 1;
+                            breakFor = 1;
+                        }
+                        if (breakFor == 1) {
+                            break;
                         }
                     }
                     if (check == 0) {
@@ -223,6 +234,9 @@ public class WareHouseFunciton implements IWareHouseFunction {
                             // New receipt create
                             exReceipt = new ExportReceipt(codeReceipt, time, listProductsExport, listQuantity);
                             exReceipt.printInforOfReceipt();
+                            // Raise count receipt
+                            reverseInt++;
+                            exportReceiptCode = reverseInt.toString();
                             stop = true;
                             break;
                         }
@@ -243,6 +257,9 @@ public class WareHouseFunciton implements IWareHouseFunction {
                                 // New receipt create
                                 exReceipt = new ExportReceipt(codeReceipt, time, listProductsExport, listQuantity);
                                 exReceipt.printInforOfReceipt();
+                                // Raise count receipt
+                                reverseInt++;
+                                importReceiptCode = reverseInt.toString();
                             }
                             stop = true;
                             break;
@@ -265,14 +282,16 @@ public class WareHouseFunciton implements IWareHouseFunction {
         System.out.print("Import/export information of product code: <Code:*****>: ");
         code = CheckRule.productCodeValid();
         if (listCodeProduct.contains(code)) {
-            
             for (WareHouse receipt : listAllReceipts) {
                 for (WarehousedProduct warehousedProduct : receipt.listProduct) {
-                    if (warehousedProduct.getProduct().getProductCode().equals(code)) {
+                    String codeReceipt = warehousedProduct.getProduct().getProductCode();
+                    if (codeReceipt.equals(code)) {
                         if (receipt instanceof ImportReceipt) {
                             ((ImportReceipt) receipt).printInforOfReceipt();
+                            System.out.println("");
                         } else {
                             ((ExportReceipt) receipt).printInforOfReceipt();
+                            System.out.println("");
                         }
                     }
                 }
@@ -282,7 +301,7 @@ public class WareHouseFunciton implements IWareHouseFunction {
         }
     }
 
-    // ORTHER METHOD
+    // OTHER METHOD
     @Override
     // <4> Report: List product that have expired : hết hạn sử dụng
     public void printListProductsExpired() {
@@ -351,5 +370,13 @@ public class WareHouseFunciton implements IWareHouseFunction {
                 System.out.println("+--------------------------------------------------------------------------------+");
             }
         }
+    }
+
+    public static ArrayList<String> listReceiptID(ArrayList<WareHouse> listAllReceipts) {
+        ArrayList<String> listId = new ArrayList<>();
+        for (WareHouse Receipt : listAllReceipts) {
+            listId.add(Receipt.getCode());
+        }
+        return listId;
     }
 }

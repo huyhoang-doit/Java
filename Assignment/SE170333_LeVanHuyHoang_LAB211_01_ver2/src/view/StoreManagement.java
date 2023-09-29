@@ -99,7 +99,7 @@ public class StoreManagement {
 
                 // <1.2> Update new information for product in list
                 case 2: {
-                    productFunction.updateProduct();
+                    productFunction.updateProduct(wareHouseFunction.listProductsInWareHouse);
                     int updateProductChoice;
                     do {
                         menu.printUpdateOptions();
@@ -108,7 +108,7 @@ public class StoreManagement {
 
                             // Agree update information
                             case 1: {
-                                productFunction.updateProduct();
+                                productFunction.updateProduct(wareHouseFunction.listProductsInWareHouse);
                                 break;
                             }
 
