@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.com">
+<head>
+    <meta charset="UTF-8">
+    <title>Multiplication Table</title>
+</head>
+<body>
+    <h1>MULTIPLICATION TABLE - <span th:text="${number}"> 0</span></h1>
+    <table>
+        <tr th:each="i: ${#numbers.sequence(1,10)}">
+            <td th:text="${number}"></td>
+            <td>x</td>
+            <td th:text="${i}"></td>
+            <td>=</td>
+            <td th:text="${i*number}"></td>
+        </tr>
+    </table>
+</body>
+</html>
