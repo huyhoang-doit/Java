@@ -27,4 +27,29 @@ public class StudentController {
         return "student/students";
     }
 
+    @GetMapping("/create")
+    public String createForm(Model model){
+        Student student = new Student();
+        model.addAttribute("student", student);
+        return "student/add-student";
+    }
+
+    @PostMapping("/save")
+    public String save(@ModelAttribute("student") Student student){
+        studentService.updateStudent(student);
+        return "redirect:/students/list";
+    }
+
+    @GetMapping("/update")
+    public String update(@RequestParam("id") Integer id, Model model){
+         Student student = studentService.getStudentById(id);
+        model.addAttribute("student", student);
+        return "student/add-student";
+    }
+
+    @GetMapping("/delete")
+    public String delete(@RequestParam("id") Integer id, Model model){
+         studentService.deleteStudent(id);
+        return "redirect:/students/list";
+    }
 }
