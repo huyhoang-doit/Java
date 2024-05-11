@@ -26,27 +26,32 @@ public class UserServiceImpl implements UserService{
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
     }
-    @PostConstruct
-    public void insertUsers() {
-        User user01 = new User();
-        user01.setUserName("Hoang");
-        user01.setPassword("$2a$12$wOVmZDH/lYO43KLTSIXxFu65os/tVCm8ufOqCiJ.H/2fX3nglpX.2");
-        user01.setEnabled(true);
-
-        Role role01 = new Role();
-        role01.setName("ROLE_ADMIN");
-
-
-        Collection<Role> roles = new ArrayList<>();
-        roles.add(role01);
-
-        user01.setRoles(roles);
-        userRepository.save(user01);
-    }
+//    @PostConstruct
+//    public void insertUsers() {
+//        User user01 = new User();
+//        user01.setUserName("Hoang");
+//        user01.setPassword("$2a$12$wOVmZDH/lYO43KLTSIXxFu65os/tVCm8ufOqCiJ.H/2fX3nglpX.2");
+//        user01.setEnabled(true);
+//
+//        Role role01 = new Role();
+//        role01.setName("ROLE_ADMIN");
+//
+//
+//        Collection<Role> roles = new ArrayList<>();
+//        roles.add(role01);
+//
+//        user01.setRoles(roles);
+//        userRepository.save(user01);
+//    }
 
     @Override
     public User findByUserName(String userName) {
         return userRepository.findByUserName(userName);
+    }
+
+    @Override
+    public void save(User user) {
+        userRepository.save(user);
     }
 
     @Override
